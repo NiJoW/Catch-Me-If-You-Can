@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Der Raub</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+    <script type="text/javascript" src="js/robbery.js"></script>
+    <script src="js/escape.js"></script>
+    <script>
+        function stopGame() {
+            //Canvas des Spiels Robbery entfernen
+            let canvas = document.querySelector("canvas");
+            canvas.parentNode.removeChild(canvas);
+            if (alreadyEscaped == false) {
+                //Einleitung Escape einblenden
+                document.getElementById("introductionEscape").style.display = "block";
+                document.body.style.overflow = "scroll"; //overflow: scroll;
+            } else { //Spiel bereits durchgespielt
+                //Gewonnen-Div einblenden
+                document.getElementById("introductionWon").style.display = "block";
+            }
+        }
+
+
+        function restartRob() {
+            javascript: location.reload();
+        }
+
+        function showWon() {
+            let canvas = document.querySelector("canvas");
+            canvas.parentNode.removeChild(canvas);
+            //Gewonnen-Div einblenden          
+            dimondsScore();
+            coinScoreCounter = 0; // Score zurück-seten
+            document.getElementById("introductionWon").style.display = "block";
+
+        }
+
+        function dimondsScore() {
+            let diamondsScore = document.getElementById("diamondsScore");
+            var text1 = "Diamanten Score:";
+            var text2 = "World!";
+            var text3 = text1.concat(" ", text2);
+            //let textdiamond = "Diamanten Score: "+"du!";
+            //<img id='diamandImg' src='imgEscape/diamand2.png' alt='Diamand'>
+            diamondsScore.innerHTML = "Diamanten Score: " + coinScoreCounter;
+        }
+
+    </script>
+    <style>
+        body {
+            background: #000000;
+            padding: 0px;
+
+            color: white;
+            text-align: justify;
+            font-family: 'Fira Sans', sans-serif;
+
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        canvas {
+            display: block;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        p {
+            width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #introductionEscape,
+        #introductionWon {
+            display: none;
+        }
+
+        #introductionEscape,
+        #introductionRobbery {
+            overflow: hidden;
+            margin-top: 10%;
+            margin-left: 100px;
+        }
+
+        #introductionEscape {
+            margin-top: auto;
+        }
+
+        #introductionWon {
+            overflow: hidden;
+            margin: auto;
+        }
+
+        #escapeLeft,
+        #escapeImg,
+        #robberyImg,
+        #robberyLeft,
+        #wonLeft,
+        #wonImg {
+            width: 500px;
+        }
+
+        #wonImg {
+            margin-top: 10px;
+        }
+
+        #escapeLeft,
+        #escapeRight,
+        #robberyLeft,
+        #robberyRight,
+        #wonLeft,
+        #wonRight {
+            display: inline-block;
+            padding: 5px;
+        }
+
+        #robberyRight {
+            margin-left: 30px;
+        }
+
+        #wonRight {
+            margin-top: 100px;
+            margin-left: 100px;
+        }
+
+        #wonLeft {}
+
+        #diamandImg {
+            width: 40px;
+            margin-right: 20px;
+            float: left;
+        }
+
+        #diamondsScore {
+            padding-top: 15px;
+        }
+
+        .button5 {
+            background-color: white;
+            color: black;
+            border: 2px solid #555555;
+        }
+
+        .button5:hover {
+            background-color: #555555;
+            color: white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div id="introductionRobbery">
+        <div id="robberyLeft"><img id="robberyImg" src="imgEscape/monaLisa2.png" alt="MonaLisa"></div>
+        <div id="robberyRight">
+            <h1>Catch me if you can</h1>
+            <p>Dieter ist ein missverstandener, zu tiefst verletzter Künstler. Da er mit seinem Talent kein Geld verdienen kann, hat er sich als Dieter der Dieb im Untergrund einen Namen gemacht. Aus Rachgelüsten will er das Museum der Stadt schädigen. <br><br>Wie viele Exponate kannst du stehlen? </p>
+            <p><b>Spielsteuerung</b>
+                <ul>
+                    <li> Laufen: Linke & rechte Pfeiltaste</li>
+                    <li> Springen: Leertaste</li>
+                    <li> Versteckte Features: Pfeil nach oben</li>
+                </ul>
+            </p>
+            <br><br>
+            <!---   <button class="button button5">Black</button>--->
+            <button onclick="startRobbery()">Ausrauben</button>
+        </div>
+    </div>
+    <div id="introductionEscape">
+        <div>
+            <!--style="float:left" style="width: 500px" -->
+            <div id="escapeLeft"><img id="escapeImg" src="imgEscape/ZwischenScreen1.png" alt="Boris"></div>
+            <div id="escapeRight">
+
+                <h1>Die Flucht</h1>
+
+                <p>Flieh vor deinen Verfolgern und entkomme über die Dächer der Stadt. Schaffst du es den Flucht-Helikopter zu erreichen oder stürzt du hilflos in die Tiefe? </p><br>
+                <p style="text-align: justify">
+                    <b>Spielsteuerung</b>
+                    <div style="text-align: justify">
+                        <ul>
+                            <li>Maus-Klick: Stab wächst</li>
+                            <li>Gedrückt halten, bis Stab lang genug</li>
+                            <li>Loslassen, um Schlucht zu überqueren<br>
+                                Stürzt du ab, startest du von vorn</li>
+                        </ul>
+
+                    </div><br>
+                    <div style="text-align: justify">
+                        Weitere Maus-Klicks:
+                        <ol style="margin-top: 2px">
+                            <li> Kopüber die Münze einsammeln</li>
+                            <li>Zurück nach oben bevor du mit dem Gebäude zusammen stößt
+                            </li>
+                        </ol>
+                    </div>
+                </p>
+                <br><br>
+                <button onclick="startEscapeGame()">Häng sie ab</button>
+
+
+            </div>
+        </div>
+    </div>
+    <div id="introductionWon">
+        <div id="wonRight">
+            <h1>Glückwunsch! Du hast sie abgehängt!</h1>
+            <div> <img id="diamandImg" src="imgEscape/diamand2.png" alt="Diamand">
+                <p id="diamondsScore"> Score:</p>
+            </div>
+
+            <p> <br>Nachdem du das Diebesgut auf den Schwarz-Markt verscherbelt hast,<br>lässt du es dir auf den Bahamas gut gehen. <br>
+                <br> Oder lässt dich das Gauer-Leben noch nicht los?
+            </p><br>
+            <br>Erneut spielen<br><br>
+            <button onclick="startRobbery()">Ausrauben</button>
+            <button onclick="startEscapeGame()">Häng sie ab</button>
+        </div>
+        <div id="wonLeft">
+            <img id="wonImg" src="imgEscape/Strand.png" alt="Strand">
+        </div>
+
+    </div>
+
+</body>
+
+</html>
